@@ -20,4 +20,8 @@ export function startMatch(opts: MatchOptions) {
   return session.runner;
 }
 
-if (import.meta.env.DEV) (window as unknown as { __session: typeof session }).__session = session;
+if (import.meta.env.DEV) {
+  const g = window as unknown as Record<string, unknown>;
+  g.__session = session;
+  void import('../sim/combat').then((m) => (g.__eliminate = (id: number, by: number) => session.runner && m.eliminate(session.runner.ctx, session.runner.world.fighters[id], by)));
+}

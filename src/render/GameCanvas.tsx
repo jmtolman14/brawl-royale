@@ -8,6 +8,7 @@ import { CameraRig } from './CameraRig';
 import { Buildings, Props } from './Environment';
 import { Fighters } from './Fighters';
 import { LootMeshes } from './LootMeshes';
+import { Blimp, MainEventRing, StormWall } from './WorldFx';
 import { Particles } from './vfx/Particles';
 import { ScreenLabelDriver } from './vfx/ScreenLabels';
 import { Terrain, Water } from './Terrain';
@@ -70,6 +71,9 @@ export default function GameCanvas() {
       <Props />
       <Fighters />
       <LootMeshes />
+      <Blimp />
+      <MainEventRing />
+      <StormWall />
       <Particles />
       <ScreenLabelDriver />
       <CameraRig />

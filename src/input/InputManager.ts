@@ -41,6 +41,7 @@ export class InputManager {
   usingPad = false;
 
   attach(el: HTMLElement) {
+    this.detach();
     this.el = el;
     window.addEventListener('keydown', this.onKeyDown);
     window.addEventListener('keyup', this.onKeyUp);
@@ -89,9 +90,12 @@ export class InputManager {
   };
 
   private onKeyDown = (e: KeyboardEvent) => {
-    if (!this.enabled) return;
     if (['Tab', 'Space', 'ControlLeft', 'KeyF', 'KeyG', 'KeyR'].includes(e.code)) e.preventDefault();
     if (e.repeat) return;
+    // UI keys work even while gameplay input is disabled (map/pause open)
+    if (e.code === 'KeyM') this.ui.onMap?.();
+    if (e.code === 'Escape' || e.code === 'KeyP') this.ui.onPause?.();
+    if (!this.enabled) return;
     this.keys.add(e.code);
     this.usingPad = false;
     const k = KEYMAP[e.code];
@@ -100,9 +104,7 @@ export class InputManager {
       const n = Number(e.code.slice(5)) - 1;
       if (n >= 0 && n < 5) this.slot = n;
     }
-    if (e.code === 'KeyM') this.ui.onMap?.();
     if (e.code === 'Tab') this.ui.onLock?.();
-    if (e.code === 'Escape' || e.code === 'KeyP') this.ui.onPause?.();
   };
 
   private onKeyUp = (e: KeyboardEvent) => {

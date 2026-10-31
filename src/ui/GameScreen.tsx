@@ -2,7 +2,9 @@ import { lazy, Suspense, useEffect } from 'react';
 import { toggleLock } from '../game/GameLoop';
 import { session, startMatch } from '../game/session';
 import { useUi } from '../store/ui';
+import { DIFFICULTY_SKILL, useSettings } from '../store/settings';
 import { HUD } from './HUD';
+import { FullMap, PauseMenu, ResultsScreen } from './Overlays';
 import { ScreenLabels } from '../render/vfx/ScreenLabels';
 
 const GameCanvas = lazy(() => import('../render/GameCanvas'));
@@ -11,14 +13,22 @@ export default function GameScreen() {
   const { fighterId, training, matchKey } = useUi();
   // Create the match synchronously before the canvas mounts
   if (!session.runner || (session.runner as unknown as { key?: number }).key !== matchKey) {
-    const r = startMatch({ seed: (Date.now() & 0xffff) + matchKey, playerRoster: fighterId, botCount: training ? 1 : 29, skipBus: training, training });
+    const botSkill = training ? 0.2 : DIFFICULTY_SKILL[useSettings.getState().difficulty];
+    const r = startMatch({ seed: (Date.now() & 0xffff) + (matchKey & 0xffff), playerRoster: fighterId, botCount: training ? 1 : 29, skipBus: training, training, botSkill });
     (r as unknown as { key?: number }).key = matchKey;
   }
   useEffect(() => {
     const ui = useUi.getState();
     session.input.ui = {
       onMap: () => ui.set({ mapOpen: !useUi.getState().mapOpen }),
-      onPause: () => useUi.getState().set({ paused: !useUi.getState().paused }),
+      onPause: () => {
+        const u = useUi.getState();
+        if (u.results) return;
+        if (u.paused) {
+          u.set({ paused: false });
+          session.input.requestLock();
+        } else u.set({ paused: true });
+      },
       onLock: toggleLock,
     };
     return () => {
@@ -32,6 +42,9 @@ export default function GameScreen() {
       </Suspense>
       <ScreenLabels />
       <HUD />
+      <FullMap />
+      <PauseMenu />
+      <ResultsScreen />
     </div>
   );
 }

@@ -26,7 +26,7 @@ export function CameraRig() {
       inp.yaw += angleDiff(inp.yaw, want) * Math.min(1, dt * 6);
       inp.pitch = lerp(inp.pitch, 0.22, Math.min(1, dt * 3));
     }
-    const dist = f.state === 'bus' ? 26 : inAir ? 10 : w.mainEvent ? 6.5 : 5.2;
+    const dist = f.state === 'bus' ? 48 : inAir ? 10 : w.mainEvent ? 6.5 : 5.2;
     const yaw = inp.yaw;
     const pitch = inp.pitch;
     const fx = -Math.sin(yaw), fz = -Math.cos(yaw);

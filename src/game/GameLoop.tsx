@@ -52,7 +52,7 @@ export function GameLoop() {
     const ui = useUi.getState();
     const w = r.world;
     const p = w.fighters[PLAYER_ID];
-    session.input.enabled = !ui.paused && !ui.mapOpen;
+    session.input.enabled = !ui.paused;
     // Drop lock if target died or got far away
     if (session.lockTarget >= 0) {
       const t = w.fighters[session.lockTarget];

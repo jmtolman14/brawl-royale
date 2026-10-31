@@ -1,4 +1,4 @@
-import { useSettings, type Quality } from '../store/settings';
+import { useSettings, type Difficulty, type Quality } from '../store/settings';
 import { useUi } from '../store/ui';
 
 export function SettingsPanel() {
@@ -15,6 +15,17 @@ export function SettingsPanel() {
           ))}
         </div>
         <div className="mt-1 text-xs opacity-60">Low: no shadows, lower resolution. High: sharper shadows, full resolution.</div>
+      </div>
+      <div>
+        <div className="mb-1 text-xs font-extrabold tracking-widest opacity-70">BOT DIFFICULTY</div>
+        <div className="flex gap-2">
+          {(['easy', 'normal', 'hard'] as Difficulty[]).map((d) => (
+            <button key={d} onClick={() => s.set({ difficulty: d })} className={`flex-1 rounded py-2 font-display text-xl uppercase tracking-wide ${s.difficulty === d ? 'bg-amber-400 text-black' : 'bg-white/10 hover:bg-white/20'}`}>
+              {d}
+            </button>
+          ))}
+        </div>
+        <div className="mt-1 text-xs opacity-60">Applies from the next match.</div>
       </div>
       <label className="block">
         <div className="mb-1 flex justify-between text-xs font-extrabold tracking-widest opacity-70"><span>MOUSE SENSITIVITY</span><span>{s.sensitivity.toFixed(2)}</span></div>
