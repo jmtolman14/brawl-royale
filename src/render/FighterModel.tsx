@@ -89,8 +89,14 @@ export function FighterBody({ def, rigRef }: { def: FighterDef; rigRef: React.Mu
         {def.archetype === 'judo' && <mesh material={M.secondary} position-y={0.14} scale={[0.44 * W, 0.07, 0.3 * W]} geometry={G.box} />}
         <group ref={set('torso')} position-y={0.12}>
           {/* Chest + belly */}
-          <mesh material={M.torso} position-y={0.3 * H} scale={[0.58 * W, 0.5 * H, 0.34 * W]} geometry={G.box} castShadow />
-          {sumo && <mesh material={M.skin} position={[0, 0.2, -0.08]} scale={[0.62 * W, 0.5, 0.48 * W]} geometry={G.sphere} castShadow />}
+          {sumo ? (
+            <>
+              <mesh material={M.skin} position-y={0.36 * H} scale={[0.5 * W, 0.5 * H, 0.42 * W]} geometry={G.sphere} castShadow />
+              <mesh material={M.skin} position={[0, 0.12, -0.04]} scale={[0.6 * W, 0.55, 0.5 * W]} geometry={G.sphere} castShadow />
+            </>
+          ) : (
+            <mesh material={M.torso} position-y={0.3 * H} scale={[0.58 * W, 0.5 * H, 0.34 * W]} geometry={G.box} castShadow />
+          )}
           {def.archetype === 'showman' && <mesh material={M.secondary} position={[0, 0.22 * H, 0.2 * W]} rotation-x={0.12} scale={[0.6 * W, 0.7 * H, 0.04]} geometry={G.box} />}
           {/* Head */}
           <group ref={set('head')} position-y={0.6 * H}>
