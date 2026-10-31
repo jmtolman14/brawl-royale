@@ -7,6 +7,8 @@ import { useSettings } from '../store/settings';
 import { CameraRig } from './CameraRig';
 import { Buildings, Props } from './Environment';
 import { Fighters } from './Fighters';
+import { Particles } from './vfx/Particles';
+import { ScreenLabelDriver } from './vfx/ScreenLabels';
 import { Terrain, Water } from './Terrain';
 
 function Sun() {
@@ -51,7 +53,7 @@ export default function GameCanvas() {
       shadows={quality !== 'low'}
       dpr={dpr}
       gl={{ antialias: quality !== 'low', powerPreference: 'high-performance' }}
-      camera={{ fov: 65, near: 0.1, far, position: [0, 150, 0] }}
+      camera={{ fov: 60, near: 0.1, far, position: [0, 150, 0] }}
       onCreated={({ gl }) => {
         session.input.attach(gl.domElement);
       }}
@@ -66,6 +68,8 @@ export default function GameCanvas() {
       <Buildings />
       <Props />
       <Fighters />
+      <Particles />
+      <ScreenLabelDriver />
       <CameraRig />
     </Canvas>
   );

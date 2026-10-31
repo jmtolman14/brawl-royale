@@ -7,7 +7,9 @@ const listeners = new Set<Listener>();
 
 export function onFx(l: Listener) {
   listeners.add(l);
-  return () => listeners.delete(l);
+  return () => {
+    listeners.delete(l);
+  };
 }
 
 export function handleEventFx(e: GameEvent) {

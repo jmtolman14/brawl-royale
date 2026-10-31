@@ -24,6 +24,8 @@ export class MatchRunner {
   private inputs: InputFrame[];
   /** Fraction between the last two sim ticks (for render interpolation). */
   alpha = 0;
+  /** Scripted inputs for specific fighters (tests, replays, future netcode). */
+  overrides = new Map<number, InputFrame>();
 
   constructor(opts: MatchOptions) {
     this.opts = opts;
@@ -87,6 +89,8 @@ export class MatchRunner {
     this.inputs[PLAYER_ID] = p;
     for (const f of w.fighters) {
       if (f.isBot) this.inputs[f.id] = f.alive && w.phase !== 'over' ? botThink(ctx, f, dt) : emptyInput();
+      const o = this.overrides.get(f.id);
+      if (o) this.inputs[f.id] = o;
     }
     if (w.phase === 'over') {
       for (const f of w.fighters) if (f.id !== PLAYER_ID || !f.alive) this.inputs[f.id] = emptyInput();

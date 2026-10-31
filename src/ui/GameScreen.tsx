@@ -2,6 +2,8 @@ import { lazy, Suspense, useEffect } from 'react';
 import { toggleLock } from '../game/GameLoop';
 import { session, startMatch } from '../game/session';
 import { useUi } from '../store/ui';
+import { HUD } from './HUD';
+import { ScreenLabels } from '../render/vfx/ScreenLabels';
 
 const GameCanvas = lazy(() => import('../render/GameCanvas'));
 
@@ -28,6 +30,8 @@ export default function GameScreen() {
       <Suspense fallback={<div className="grid h-full place-items-center font-display text-4xl">LOADING ISLAND…</div>}>
         <GameCanvas key={matchKey} />
       </Suspense>
+      <ScreenLabels />
+      <HUD />
     </div>
   );
 }

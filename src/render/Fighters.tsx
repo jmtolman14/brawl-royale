@@ -2,43 +2,55 @@ import { useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
 import * as THREE from 'three';
 import { session } from '../game/session';
-import { fighterPos } from './interp';
+import { getFighter } from '../data/fighters';
+import { FighterModel } from './FighterModel';
 
-const v = new THREE.Vector3();
-
-/** Placeholder capsules (replaced by FighterModel in milestone 2). */
 export function Fighters() {
   const r = session.runner!;
+  const getAlpha = () => session.runner?.alpha ?? 0;
   return (
     <group>
       {r.world.fighters.map((f) => (
-        <Capsule key={f.id} id={f.id} />
+        <FighterLOD key={f.id} id={f.id}>
+          <FighterModel fighter={f} getAlpha={getAlpha} isWinner={() => session.runner?.world.winner === f.id} />
+        </FighterLOD>
       ))}
     </group>
   );
 }
 
-function Capsule({ id }: { id: number }) {
+/** Hides far-away fighters' detailed rigs and disables their shadows. */
+function FighterLOD({ id, children }: { id: number; children: React.ReactNode }) {
   const ref = useRef<THREE.Group>(null);
-  useFrame(() => {
-    const r = session.runner!;
+  const far = useRef<THREE.Mesh>(null);
+  const shadow = useRef<boolean | null>(null);
+  const color = getFighter(session.runner!.world.fighters[id].rosterId).colors.primary;
+  useFrame(({ camera }) => {
+    const r = session.runner;
+    const g = ref.current;
+    if (!r || !g || !far.current) return;
     const f = r.world.fighters[id];
-    const g = ref.current!;
-    g.visible = f.state !== 'bus';
-    fighterPos(f, r.alpha, v);
-    g.position.copy(v);
-    g.rotation.y = f.yaw;
+    const d = Math.hypot(f.pos.x - camera.position.x, f.pos.z - camera.position.z);
+    const detailed = d < 70 || f.state === 'glide';
+    g.visible = detailed;
+    far.current.visible = !detailed && d < 260 && f.state !== 'bus';
+    if (far.current.visible) far.current.position.set(f.pos.x, f.pos.y + 0.9, f.pos.z);
+    // Only nearby fighters cast shadows
+    const cast = d < 35;
+    if (cast !== shadow.current) {
+      shadow.current = cast;
+      g.traverse((o) => {
+        if ((o as THREE.Mesh).isMesh) o.castShadow = cast;
+      });
+    }
   });
   return (
-    <group ref={ref}>
-      <mesh position-y={0.9} castShadow>
-        <capsuleGeometry args={[0.4, 1, 4, 8]} />
-        <meshToonMaterial color={id === 0 ? '#e63946' : '#999'} />
+    <>
+      <group ref={ref}>{children}</group>
+      <mesh ref={far} visible={false}>
+        <capsuleGeometry args={[0.45, 1, 2, 6]} />
+        <meshLambertMaterial color={color} />
       </mesh>
-      <mesh position={[0, 1.4, -0.4]}>
-        <boxGeometry args={[0.2, 0.2, 0.3]} />
-        <meshToonMaterial color="#222" />
-      </mesh>
-    </group>
+    </>
   );
 }
