@@ -1,5 +1,7 @@
 # BRAWL ROYALE 🥊
 
+**▶ Play now: https://brawl-royale-sigma.vercel.app**
+
 A browser-based 3D battle royale with **no weapons**. Thirty fighters drop onto an island, loot up, and fight hand-to-hand as the storm closes in. The last fighter standing wins.
 
 Built with Vite, React, TypeScript, React Three Fiber, Zustand and Tailwind. Everything is procedural: the low-poly fighters, the island, the animation and the WebAudio-synthesized sound. There are no external or copyrighted assets.
