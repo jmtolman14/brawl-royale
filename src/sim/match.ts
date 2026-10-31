@@ -7,7 +7,7 @@ import { FIGHTER_RADIUS, PLAYER_ID, TICK } from './constants';
 import type { SimCtx } from './ctx';
 import { initBus, tickBus, tickGlide } from './drop';
 import { tickFighter } from './fighter';
-import { spawnLoot, updateProjectiles } from './loot';
+import { spawnLoot, spawnTrainingLoot, updateProjectiles } from './loot';
 import { powerOf } from './stats';
 import { initRing, ROPE_HALF, tickRing } from './ring';
 import { Rng } from './rng';
@@ -36,7 +36,7 @@ export class MatchRunner {
     if (!opts.training) {
       spawnLoot(this.world, opts.seed);
       initRing(this.ctx);
-    }
+    } else spawnTrainingLoot(this.world);
     if (!opts.skipBus) initBus(this.ctx);
     initBots(this.ctx);
   }

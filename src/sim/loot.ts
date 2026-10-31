@@ -281,3 +281,15 @@ export function updateProjectiles(ctx: SimCtx, dt: number, applyHit: (owner: Fig
     if (dead) w.projectiles.splice(i, 1);
   }
 }
+
+/** A small loot spread around the training spawn so every mechanic can be practised. */
+export function spawnTrainingLoot(w: WorldState) {
+  const p = w.fighters[0].pos;
+  const list = ['bandage', 'energy', 'chair', 'bottle', 'adrenaline', 'padding', 'wraps', 'belt'];
+  list.forEach((id, i) => {
+    const a = Math.PI * 0.6 + (i / list.length) * Math.PI * 0.8;
+    const def = ITEM_BY_ID[id];
+    spawnItem(w, id, def.kind === 'throwable' ? def.stack : 1, p.x + Math.cos(a) * 5, p.z + Math.sin(a) * 5);
+  });
+  w.crates.push({ uid: w.nextUid++, x: p.x - 5, z: p.z - 2, y: heightAt(p.x - 5, p.z - 2), opened: false, tier: 1 });
+}

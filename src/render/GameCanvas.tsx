@@ -7,6 +7,7 @@ import { useSettings } from '../store/settings';
 import { CameraRig } from './CameraRig';
 import { Buildings, Props } from './Environment';
 import { Fighters } from './Fighters';
+import { LootMeshes } from './LootMeshes';
 import { Particles } from './vfx/Particles';
 import { ScreenLabelDriver } from './vfx/ScreenLabels';
 import { Terrain, Water } from './Terrain';
@@ -68,6 +69,7 @@ export default function GameCanvas() {
       <Buildings />
       <Props />
       <Fighters />
+      <LootMeshes />
       <Particles />
       <ScreenLabelDriver />
       <CameraRig />
