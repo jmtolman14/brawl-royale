@@ -11,6 +11,7 @@ interface SettingsState {
   volume: number; // 0..1
   invertY: boolean;
   tutorialSeen: boolean;
+  showFps: boolean;
   set: (p: Partial<Omit<SettingsState, 'set'>>) => void;
 }
 
@@ -31,6 +32,7 @@ export const useSettings = create<SettingsState>((set, get) => ({
   volume: 0.7,
   invertY: false,
   tutorialSeen: false,
+  showFps: false,
   ...load(),
   set: (p) => {
     set(p);

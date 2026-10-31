@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { ARCHETYPE_LABEL, FIGHTERS, getFighter, type FighterStats } from '../data/fighters';
 import { PASSIVES, SIGNATURES } from '../data/moves';
 import { useUi } from '../store/ui';
+import { initAudio, sfx } from '../audio/sfx';
 
 const FighterPreview = lazy(() => import('./FighterPreview'));
 
@@ -19,7 +20,11 @@ export default function CharacterSelect() {
   const def = getFighter(fighterId);
   const sig = SIGNATURES[def.signature];
   const pas = PASSIVES[def.passive];
-  const start = () => set({ screen: 'game', matchKey: Date.now(), results: null, paused: false, mapOpen: false });
+  const start = () => {
+    initAudio();
+    sfx.bell(1);
+    set({ screen: 'game', matchKey: Date.now(), results: null, paused: false, mapOpen: false });
+  };
   return (
     <div className="relative flex h-full flex-col overflow-hidden bg-[#0b0d14] font-body">
       <div className="pointer-events-none absolute inset-0 opacity-60" style={{ background: `radial-gradient(ellipse at 70% 40%, ${def.colors.primary}55, transparent 60%)` }} />
@@ -38,7 +43,11 @@ export default function CharacterSelect() {
             return (
               <button
                 key={f.id}
-                onClick={() => set({ fighterId: f.id })}
+                onClick={() => {
+                  initAudio();
+                  sfx.ui();
+                  set({ fighterId: f.id });
+                }}
                 onDoubleClick={start}
                 className={`group relative overflow-hidden rounded-md p-2 text-left transition ${sel ? 'scale-[1.03] ring-2 ring-amber-300' : 'ring-1 ring-white/10 hover:ring-white/40'}`}
                 style={{ background: `linear-gradient(160deg, ${f.colors.primary}cc, ${f.colors.secondary}55 70%, #0008)` }}

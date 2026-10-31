@@ -38,9 +38,12 @@ export function SettingsPanel() {
       <label className="flex items-center gap-2 text-sm font-bold">
         <input type="checkbox" checked={s.invertY} onChange={(e) => s.set({ invertY: e.target.checked })} className="h-4 w-4 accent-amber-400" /> Invert camera Y
       </label>
-      <button className="text-xs font-bold underline opacity-70 hover:opacity-100" onClick={() => s.set({ tutorialSeen: false })}>
-        Show the tutorial tips again next match
-      </button>
+      <label className="flex items-center gap-2 text-sm font-bold">
+        <input type="checkbox" checked={!s.tutorialSeen} onChange={(e) => s.set({ tutorialSeen: !e.target.checked })} className="h-4 w-4 accent-amber-400" /> Show tutorial tips in matches
+      </label>
+      <label className="flex items-center gap-2 text-sm font-bold">
+        <input type="checkbox" checked={s.showFps} onChange={(e) => s.set({ showFps: e.target.checked })} className="h-4 w-4 accent-amber-400" /> Show FPS counter
+      </label>
     </div>
   );
 }

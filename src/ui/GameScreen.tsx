@@ -4,6 +4,10 @@ import { session, startMatch } from '../game/session';
 import { useUi } from '../store/ui';
 import { DIFFICULTY_SKILL, useSettings } from '../store/settings';
 import { HUD } from './HUD';
+import { Tutorial } from './Tutorial';
+import { FpsCounter } from './FpsCounter';
+import { initAudio, startCrowd, stopCrowd } from '../audio/sfx';
+import { installAudio } from '../game/audioBridge';
 import { FullMap, PauseMenu, ResultsScreen } from './Overlays';
 import { ScreenLabels } from '../render/vfx/ScreenLabels';
 
@@ -31,7 +35,12 @@ export default function GameScreen() {
       },
       onLock: toggleLock,
     };
+    initAudio();
+    startCrowd();
+    const offAudio = installAudio();
     return () => {
+      offAudio();
+      stopCrowd();
       session.input.detach();
     };
   }, []);
@@ -42,6 +51,8 @@ export default function GameScreen() {
       </Suspense>
       <ScreenLabels />
       <HUD />
+      <Tutorial />
+      <FpsCounter />
       <FullMap />
       <PauseMenu />
       <ResultsScreen />

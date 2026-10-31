@@ -6,6 +6,7 @@ import { RING_PHASES } from '../sim/ring';
 import { useUi } from '../store/ui';
 import { ItemIcon } from './ItemIcon';
 import { Minimap } from './Minimap';
+import { session } from '../game/session';
 
 const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 
@@ -142,7 +143,7 @@ export function HUD() {
       )}
 
       {/* Click to play */}
-      {!locked && hud.phase !== 'over' && (
+      {!locked && !session.input.usingPad && hud.phase !== 'over' && (
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-black/70 px-6 py-3 text-center">
           <div className="font-display text-3xl">CLICK TO FIGHT</div>
           <div className="text-xs opacity-80">Captures your mouse for camera control · Esc releases it</div>
