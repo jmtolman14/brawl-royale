@@ -12,13 +12,13 @@ export interface RingPhase {
 
 /** Storm schedule. The final circle becomes a wrestling ring ("Main Event"). */
 export const RING_PHASES: RingPhase[] = [
-  { wait: 75, shrink: 40, radius: 190, damage: 1 },
-  { wait: 45, shrink: 30, radius: 120, damage: 2 },
-  { wait: 40, shrink: 25, radius: 70, damage: 4 },
-  { wait: 35, shrink: 20, radius: 38, damage: 6 },
-  { wait: 30, shrink: 18, radius: 18, damage: 9 },
-  { wait: 25, shrink: 15, radius: 10, damage: 12 },
-  { wait: 40, shrink: 45, radius: 0, damage: 16 },
+  { wait: 60, shrink: 35, radius: 180, damage: 1 },
+  { wait: 35, shrink: 25, radius: 110, damage: 2 },
+  { wait: 30, shrink: 20, radius: 65, damage: 4 },
+  { wait: 25, shrink: 18, radius: 36, damage: 6 },
+  { wait: 22, shrink: 15, radius: 18, damage: 9 },
+  { wait: 20, shrink: 12, radius: 10, damage: 12 },
+  { wait: 30, shrink: 40, radius: 0, damage: 16 },
 ];
 export const MAIN_EVENT_PHASE = 5;
 export const ROPE_HALF = 7;
