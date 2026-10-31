@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root { height: 100%; margin: 0; overflow: hidden; background: #0b0d14; color: #fff; }
+body { font-family: 'Barlow', system-ui, sans-serif; user-select: none; }
+.font-display { letter-spacing: 0.04em; }
